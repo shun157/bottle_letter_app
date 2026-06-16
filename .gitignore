@@ -1,0 +1,45 @@
+# Dependencies
+**/node_modules/
+**/vendor/
+
+# Environment
+**/.env
+**/.env.local
+**/.env.*.local
+**/.env.backup
+**/.env.production
+
+# IDE
+.vscode/
+.idea/
+.fleet/
+.nova/
+.zed/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# React/Vite
+**/dist/
+**/dist-ssr/
+
+# Laravel
+backend/storage/*.key
+backend/public/hot
+backend/public/build
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/bootstrap/cache/*.php
+
+# Composer
+auth.json
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache
