@@ -1,0 +1,88 @@
+.main-bg {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/ocean.jpg");
+  background-size: cover;
+  background-repeat: repeat-x; /* 横に繰り返す */
+  background-position: 0 0;
+
+  animation: wave 20s linear infinite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 背景を横に流すアニメーション */
+@keyframes wave {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -2000px 0;
+  }
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.primary {
+  background: rgba(0, 120, 255, 0.8);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.secondary {
+  background: rgba(255, 255, 255, 0.8);
+  color: #003366;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* 全体レイアウト */
+.main-layout {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 左メニュー */
+.menu {
+  position: absolute;
+  top: 20%;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column; /* ← アイコンを上、文字を下に */
+  align-items: center;
+  text-align: center;
+  gap: 8px; /* アイコンと文字の距離 */
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-item:hover {
+  transform: translateY(-3px);
+}
+
+.menu-icon {
+  width: 60px;   /* ← アイコンを大きく */
+  height: 60px;
+  object-fit: contain;
+}
+
+.menu-item span {
+  font-size: 22px;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(0,0,0,0.7);
+}
