@@ -1,0 +1,79 @@
+/* ===== オーバーレイ ===== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0,0,0,.45);
+  z-index: 10000;
+
+  pointer-events: auto;
+}
+
+/* ===== 手紙 ===== */
+
+.letter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.letter {
+  width: 700px;
+  height: 550px;
+
+  background: #f3f1e8;
+
+  padding: 50px 70px;
+
+  position: relative;
+}
+
+.date {
+  text-align: right;
+  font-size: 24px;
+  margin-bottom: 70px;
+}
+
+.line {
+  width: 100%;
+  border-bottom: 2px solid #666;
+  margin-bottom: 70px;
+}
+
+.short {
+  width: 35%;
+}
+
+.bottom-area {
+  position: absolute;
+  bottom: 50px;
+  right: 70px;
+
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.signature-line {
+  width: 180px;
+  border-bottom: 2px solid #666;
+}
+
+/* ===== 閉じるボタン ===== */
+.close-button {
+  margin-top: 24px;
+  width: 220px;
+  height: 60px;
+
+  border-radius: 999px;
+  border: none;
+
+  cursor: pointer;
+}
+
