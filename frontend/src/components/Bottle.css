@@ -1,0 +1,83 @@
+/* ===== 瓶 ===== */
+
+.bottle {
+  position: absolute;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* 左→右 */
+
+.bottle-right{
+    animation-name: driftRight;
+}
+
+/* 右→左 */
+
+.bottle-left{
+    animation-name: driftLeft;
+}
+
+/* ホバー */
+
+.bottle:hover {
+  animation-play-state: paused;
+  filter: drop-shadow(0 0 15px gold);
+}
+
+@keyframes driftRight {
+
+  0% {
+    left: -15%;
+    transform: rotate(35deg) translateY(0px);
+  }
+
+  25% {
+    transform: rotate(30deg) translateY(-10px);
+  }
+
+  50% {
+    transform: rotate(35deg) translateY(8px);
+  }
+
+  75% {
+    transform: rotate(30deg) translateY(-10px);
+  }
+
+  100% {
+    left: 110%;
+    transform: rotate(35deg) translateY(0px);
+  }
+
+}
+
+@keyframes driftLeft {
+
+  0% {
+    right: -15%;
+    transform: rotate(-35deg) translateY(0px);
+  }
+
+  25% {
+    transform: rotate(-30deg) translateY(-10px);
+  }
+
+  50% {
+    transform: rotate(-35deg) translateY(8px);
+  }
+
+  75% {
+    transform: rotate(-30deg) translateY(-10px);
+  }
+
+  100% {
+    right: 110%;
+    transform: rotate(-35deg) translateY(0px);
+  }
+
+}
+

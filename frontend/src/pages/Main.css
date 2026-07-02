@@ -37,11 +37,23 @@
   display: flex;          /* SVG2枚を横並び */
   width: 200%;            /* 2枚分の幅 */
   animation: waveScroll linear infinite;
+
+  pointer-events: none; 
 }
 
 .wave-track svg {
-  width: 50%;             /* 1枚あたり画面幅と同じ */
+  position: relative;
+
+  width: 50%;
   flex-shrink: 0;
+
+  pointer-events: none;
+}
+
+/* 波と瓶の重なり順を管理するレイヤー */
+.wave-layer{
+  position:absolute;
+  inset:0;
 }
 
 /* 1枚目：ゆっくり */
