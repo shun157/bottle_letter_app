@@ -12,19 +12,24 @@ export default function Bottle({
   onClick,
 }) {
   return (
-    <img
-      src={bottleImg}
-      alt="瓶"
-      className={`bottle bottle-${direction}`}
+    <div
+      className={`bottle-float bottle-${direction}`}
       style={{
         top,
-        width,
-        opacity,
         zIndex,
         animationDuration: duration,
-        "--angle": `${angle ?? 25}deg`,
       }}
-      onClick={onClick}
-    />
+    >
+      <img
+        src={bottleImg}
+        alt="瓶"
+        className="bottle"
+        style={{
+          width,
+          opacity,
+        }}
+        onClick={onClick}
+      />
+    </div>
   );
 }
