@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { initialLayers } from "../data/layers";
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
@@ -11,6 +11,24 @@ import Bottle from "../components/Bottle";
 export default function Main() {
   const [showLetter, setShowLetter] = useState(false);
   const [layers, setLayers] = useState(initialLayers);
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLayers(prev =>
+        prev.map(layer => {
+          if (layer.visible) return layer;
+
+          return {
+            ...layer,
+            visible: true,
+          };
+        })
+      );
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="ocean">
 
