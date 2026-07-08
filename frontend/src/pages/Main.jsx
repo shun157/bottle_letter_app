@@ -1,5 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
 import { initialLayers } from "../data/layers";
+import { ensureSession, fetchStream } from "../api/client";
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
@@ -88,6 +89,7 @@ export default function Main() {
       <LetterScene
         showLetter={showLetter}
         setShowLetter={setShowLetter}
+        body={letterBody}
       />
 
     </div>

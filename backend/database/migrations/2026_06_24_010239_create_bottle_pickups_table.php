@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('client_sessions', function (Blueprint $table) {
+        Schema::create('bottle_pickups', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('session_token')->unique(); 
+            $table->uuid('bottle_message_id')->unique(); // 1メッセージ=1回収（二重回収防止）
 
-            $table->boolean('notification_enabled')->default(false);
+            $table->uuid('receiver_session_id')->index(); // 誰が拾ったか
+            $table->uuid('assignment_id')->index(); // どの割り当て経由で拾ったか
 
-            $table->timestamp('last_seen_at')->nullable();
+            $table->timestamp('picked_at');
 
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_sessions');
+        Schema::dropIfExists('bottle_pickups');
     }
 };
