@@ -31,48 +31,10 @@
   height: 100%;
 }
 
-/* wave-track：SVGを2枚横に並べて、左にスライドし続ける */
-.wave-track {
-  position: absolute;
-  display: flex;          /* SVG2枚を横並び */
-  width: 200%;            /* 2枚分の幅 */
-  animation: waveScroll linear infinite;
-
-  pointer-events: none; 
-}
-
-.wave-track svg {
-  position: relative;
-
-  width: 50%;
-  flex-shrink: 0;
-
-  pointer-events: none;
-}
-
 /* 波と瓶の重なり順を管理するレイヤー */
 .wave-layer{
   position:absolute;
   inset:0;
-}
-
-/* 1枚目：ゆっくり */
-.wave1 {
-  animation-duration: 8s;
-  bottom: 60px;
-}
-
-/* 2枚目：少し速く、下に配置 */
-.wave2 {
-  animation-duration: 12s;
-  animation-direction: reverse; /* 逆向きに流す */
-  bottom: 0;
-}
-
-/* 左にちょうど50%（SVG1枚分）ずらす → シームレスにループ */
-@keyframes waveScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
 }
 
 .btn:hover {
@@ -109,6 +71,8 @@
   display: flex;
   flex-direction: column;
   gap: 35px;
+
+  z-index: 1000;
 }
 
 .menu-item {

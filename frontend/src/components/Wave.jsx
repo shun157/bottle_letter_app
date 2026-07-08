@@ -1,3 +1,5 @@
+import "./Wave.css";
+
 export default function Wave({
   top,
   height,

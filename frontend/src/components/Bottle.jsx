@@ -27,6 +27,7 @@ export default function Bottle({
         style={{
           width,
           opacity,
+          "--angle": `${angle}deg`,
         }}
         onClick={onClick}
       />

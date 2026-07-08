@@ -12,20 +12,22 @@ import Bottle from "../components/Bottle";
 export default function Main() {
   const [showLetter, setShowLetter] = useState(false);
   const [layers, setLayers] = useState(initialLayers);
-  // バックから取得したボトル（手紙本文）。null のときは海に流れているボトルが無い状態。
-  const [letterBody, setLetterBody] = useState(null);
-
-  // 起動時にセッションを用意し、流れてきたボトルを1件取得する
+  
   useEffect(() => {
-    (async () => {
-      try {
-        const sessionId = await ensureSession();
-        const data = await fetchStream(sessionId);
-        setLetterBody(data.message ? data.message.body : null);
-      } catch (e) {
-        console.error("ボトルの取得に失敗しました", e);
-      }
-    })();
+    const timer = setInterval(() => {
+      setLayers(prev =>
+        prev.map(layer => {
+          if (layer.visible) return layer;
+
+          return {
+            ...layer,
+            visible: true,
+          };
+        })
+      );
+    }, 10000);
+
+    return () => clearInterval(timer);
   }, []);
 
   return (
