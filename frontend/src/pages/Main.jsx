@@ -1,5 +1,6 @@
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { initialLayers } from "../data/layers";
+import { ensureSession, fetchStream } from "../api/client";
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
@@ -11,6 +12,22 @@ import Bottle from "../components/Bottle";
 export default function Main() {
   const [showLetter, setShowLetter] = useState(false);
   const [layers, setLayers] = useState(initialLayers);
+  // バックから取得したボトル（手紙本文）。null のときは海に流れているボトルが無い状態。
+  const [letterBody, setLetterBody] = useState(null);
+
+  // 起動時にセッションを用意し、流れてきたボトルを1件取得する
+  useEffect(() => {
+    (async () => {
+      try {
+        const sessionId = await ensureSession();
+        const data = await fetchStream(sessionId);
+        setLetterBody(data.message ? data.message.body : null);
+      } catch (e) {
+        console.error("ボトルの取得に失敗しました", e);
+      }
+    })();
+  }, []);
+
   return (
     <div className="ocean">
 
@@ -70,6 +87,7 @@ export default function Main() {
       <LetterScene
         showLetter={showLetter}
         setShowLetter={setShowLetter}
+        body={letterBody}
       />
 
     </div>

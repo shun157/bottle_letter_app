@@ -3,6 +3,7 @@ import "./Letter.css";
 export default function LetterScene({
   showLetter,
   setShowLetter,
+  body,
 }) {
   if (!showLetter) return null;
 
@@ -16,9 +17,7 @@ export default function LetterScene({
           <div className="date">○月○日</div>
 
           <p>
-            今日も一日お疲れさまでした。
-            <br />
-            ゆっくり休んでください。
+            {body ?? "いまは海に流れているボトルがありません。"}
           </p>
 
           <div className="bottom-area">
