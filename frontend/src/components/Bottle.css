@@ -21,19 +21,21 @@
   height: auto;
   cursor: pointer;
   user-select: none;
+
+  animation: rock 4s ease-in-out infinite;
 }
 
 /* 右へ流れる瓶：ゆらゆら */
 
-.bottle-right .bottle {
+/* .bottle-right .bottle {
   animation: rockRight 6s ease-in-out infinite;
-}
+} */
 
 /* 左へ流れる瓶：ゆらゆら */
 
-.bottle-left .bottle {
+/* .bottle-left .bottle {
   animation: rockLeft 6s ease-in-out infinite;
-}
+} */
 
 /* ホバー */
 
@@ -109,34 +111,18 @@
   }
 }
 
-/* ===== 右向きの傾き ===== */
+/* ===== 傾き ===== */
 
-@keyframes rockRight {
+@keyframes rock {
   0% {
-    transform: rotate(35deg);
+    transform: rotate(calc(var(--angle) + 5deg));
   }
 
   50% {
-    transform: rotate(29deg);
+    transform: rotate(calc(var(--angle) - 5deg));
   }
 
   100% {
-    transform: rotate(35deg);
-  }
-}
-
-/* ===== 左向きの傾き ===== */
-
-@keyframes rockLeft {
-  0% {
-    transform: rotate(-35deg);
-  }
-
-  50% {
-    transform: rotate(-29deg);
-  }
-
-  100% {
-    transform: rotate(-35deg);
+    transform: rotate(calc(var(--angle) + 5deg));
   }
 }
