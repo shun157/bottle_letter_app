@@ -3,6 +3,7 @@ import "./Letter.css";
 export default function LetterScene({
   showLetter,
   setShowLetter,
+  buttonText = "うみにもどる",
 }) {
   if (!showLetter) return null;
 
@@ -33,7 +34,7 @@ export default function LetterScene({
             setShowLetter(false);
           }}
         >
-          うみにもどる
+          {buttonText}
         </button>
       </div>
     </div>

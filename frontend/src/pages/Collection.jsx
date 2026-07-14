@@ -1,9 +1,14 @@
 import "./Collection.css";
 import bottleImg from "../assets/bottle.png";
+import LetterScene from "../components/LetterScene";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Collection() {
   const navigate = useNavigate();
+
+  const [showLetter, setShowLetter] = useState(false);
+  const [selectedBottle, setSelectedBottle] = useState(null);
 
   // 仮データ
   const bottles = [1, 2, 3, 4, 5, 6, 7];
@@ -29,6 +34,10 @@ export default function Collection() {
                 src={bottleImg}
                 alt="ボトル"
                 className="collection-bottle"
+                onClick={() => {
+                  setSelectedBottle(id);
+                  setShowLetter(true);
+                }}
               />
             ))}
           </div>
@@ -36,6 +45,11 @@ export default function Collection() {
           <div className="shelf"></div>
         </div>
       ))}
+      <LetterScene
+        showLetter={showLetter}
+        setShowLetter={setShowLetter}
+        buttonText="もどる"
+      />
     </div>
   );
 }
