@@ -1,4 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { initialLayers } from "../data/layers";
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
@@ -11,6 +12,7 @@ import Bottle from "../components/Bottle";
 export default function Main() {
   const [showLetter, setShowLetter] = useState(false);
   const [layers, setLayers] = useState(initialLayers);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -66,14 +68,15 @@ export default function Main() {
 
       {/* 左メニュー */}
       <div className="menu">
-        <div className="menu-item">うみへ</div>
-
         <div className="menu-item">
           <img src={nagasuIcon} className="menu-icon" />
           <span>ながす</span>
         </div>
 
-        <div className="menu-item">
+        <div 
+          className="menu-item"
+          onClick={() => navigate("/collection")}
+        >
           <img src={motimonoIcon} className="menu-icon" />
           <span>もちもの</span>
         </div>
