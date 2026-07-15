@@ -14,15 +14,26 @@ async function request(path, options = {}) {
   return res.json();
 }
 
-// セッションを取得（無ければ発行して localStorage に保存）
-export async function ensureSession() {
-  let sessionId = localStorage.getItem(SESSION_KEY);
-  if (sessionId) return sessionId;
+// セッション発行の多重実行を防ぐための in-flight プロミス
+let sessionPromise = null;
 
-  const data = await request("/sessions", { method: "POST" });
-  sessionId = data.session_id;
-  localStorage.setItem(SESSION_KEY, sessionId);
-  return sessionId;
+// セッションを取得（無ければ発行して localStorage に保存）
+// 同時に複数回呼ばれても、発行リクエストは1回だけにまとめる（StrictModeの二重実行対策）。
+export async function ensureSession() {
+  const stored = localStorage.getItem(SESSION_KEY);
+  if (stored) return stored;
+
+  if (!sessionPromise) {
+    sessionPromise = request("/sessions", { method: "POST" })
+      .then((data) => {
+        localStorage.setItem(SESSION_KEY, data.session_id);
+        return data.session_id;
+      })
+      .finally(() => {
+        sessionPromise = null;
+      });
+  }
+  return sessionPromise;
 }
 
 // 自分の画面に流すべきボトルを1件取得（無ければ message:null）
@@ -36,6 +47,22 @@ export async function createMessage(sessionId, body) {
     method: "POST",
     body: JSON.stringify({ body, sender_session_id: sessionId }),
   });
+}
+
+// ボトルを拾う（回収）
+export async function pickupMessage(messageId, assignmentId, sessionId) {
+  return request(`/messages/${messageId}/pickup`, {
+    method: "POST",
+    body: JSON.stringify({
+      assignment_id: assignmentId,
+      receiver_session_id: sessionId,
+    }),
+  });
+}
+
+// 割り当てを期限切れにして海へ戻す（再放流）
+export async function expireAssignment(assignmentId) {
+  return request(`/assignments/${assignmentId}/expire`, { method: "PATCH" });
 }
 
 // コレクション（拾った手紙・流した手紙の履歴）を取得
