@@ -1,7 +1,7 @@
 import "./Collection.css";
 import bottleImg from "../assets/bottle.png";
-import LetterScene from "../components/LetterScene";
-import { useState, useEffect } from "react";
+import Letter from "../components/Letter";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ensureSession, fetchCollection } from "../api/client";
 
@@ -13,18 +13,27 @@ export default function Collection() {
   // 拾った手紙の一覧（もちもの）
   const [bottles, setBottles] = useState([]);
 
-  // 開いたときに拾った手紙を取得
-  useEffect(() => {
-    (async () => {
-      try {
-        const sessionId = await ensureSession();
-        const data = await fetchCollection(sessionId);
-        setBottles(data.picked_messages ?? []);
-      } catch (e) {
-        console.error("コレクションの取得に失敗しました", e);
-      }
-    })();
-  }, []);
+  // 仮データ
+  const bottles = [
+    {
+      id: 1,
+      title: "今日の出来事",
+      date: "2026年7月15日",
+      message: "今日はいいことがありました。",
+    },
+    {
+      id: 2,
+      title: "ありがとう",
+      date: "2026年7月14日",
+      message: "助けてくれてありがとう！",
+    },
+    {
+      id: 3,
+      title: "ひとりごと",
+      date: "2026年7月13日",
+      message: "眠たいです。",
+    },
+  ];
 
   // 5個ずつ棚に分ける
   const shelves = Array.from(
@@ -41,14 +50,14 @@ export default function Collection() {
       {shelves.map((shelf, index) => (
         <div className="shelf-wrapper" key={index}>
           <div className="bottles">
-            {shelf.map((item) => (
+            {shelf.map((bottle) => (
               <img
-                key={item.pickup_id}
+                key={bottle.id}
                 src={bottleImg}
                 alt="ボトル"
                 className="collection-bottle"
                 onClick={() => {
-                  setSelectedBody(item.body);
+                  setSelectedBottle(bottle);
                   setShowLetter(true);
                 }}
               />
@@ -58,11 +67,13 @@ export default function Collection() {
           <div className="shelf"></div>
         </div>
       ))}
-      <LetterScene
+      <Letter
         showLetter={showLetter}
         setShowLetter={setShowLetter}
-        body={selectedBody}
-        buttonText="もどる"
+        title={selectedBottle?.title}
+        date={selectedBottle?.date}
+        message={selectedBottle?.message}
+        buttonText="もちものにもどる"
       />
     </div>
   );

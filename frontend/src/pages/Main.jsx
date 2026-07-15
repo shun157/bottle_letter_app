@@ -7,11 +7,22 @@ import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
 import tukaikataIcon from "../assets/tukaikata.png";
 import Wave from "../components/Wave";
-import LetterScene from "../components/LetterScene";
+import Letter from "../components/Letter";
 import Bottle from "../components/Bottle";
+
+function getTodayDate() {
+  const today = new Date();
+
+  return `${today.getFullYear()}年${
+    today.getMonth() + 1
+  }月${today.getDate()}日`;
+}
 
 export default function Main() {
   const [showLetter, setShowLetter] = useState(false);
+  
+  const [letterData, setLetterData] = useState(null);
+
   const [layers, setLayers] = useState(initialLayers);
   // バックから取得したボトル（手紙本文）。null のときは海に流れているボトルが無い状態。
   const [letterBody, setLetterBody] = useState(null);
@@ -70,6 +81,13 @@ export default function Main() {
             <Bottle
               {...layer.bottle}
               onClick={() => {
+
+                setLetterData({
+                  title: layer.letter?.title ?? "海からの手紙",
+                  date: getTodayDate(),
+                  message: layer.letter?.message ?? "こんにちは。"
+                });
+
                 setShowLetter(true);
 
                 setLayers(prev =>
@@ -114,10 +132,13 @@ export default function Main() {
 
       </div>
 
-      <LetterScene
+      <Letter
         showLetter={showLetter}
         setShowLetter={setShowLetter}
-        body={letterBody}
+
+        title={letterData?.title}
+        date={letterData?.date}
+        message={letterData?.message}
       />
 
     </div>
