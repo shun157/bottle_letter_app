@@ -9,9 +9,6 @@ export default function Letter({
   date = "2026年7月15日",
   message = "",
 }) {
-
-  console.log("Letter表示", showLetter, title, message);
-
   if (!showLetter) return null;
 
   return (
