@@ -10,6 +10,7 @@ export default function Bottle({
   angle,
   zIndex,
   onClick,
+  onDriftOff,
 }) {
   return (
     <div
@@ -18,6 +19,13 @@ export default function Bottle({
         top,
         zIndex,
         animationDuration: duration,
+      }}
+      onAnimationIteration={(e) => {
+        // 画面を1周流れ切った（＝画面外へ消えた）タイミング。
+        // 内側の瓶の揺れ(rock)アニメーションとは区別する。
+        if (e.animationName === "driftRight" || e.animationName === "driftLeft") {
+          onDriftOff?.();
+        }
       }}
     >
       <img
