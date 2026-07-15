@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { initialLayers } from "../data/layers";
+import { ensureSession, fetchStream, pingSession } from "../api/client";
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
@@ -23,8 +24,30 @@ export default function Main() {
   const [letterData, setLetterData] = useState(null);
 
   const [layers, setLayers] = useState(initialLayers);
+  // バックから取得したボトル（手紙本文）。null のときは海に流れているボトルが無い状態。
+  const [letterBody, setLetterBody] = useState(null);
   const navigate = useNavigate();
-  
+
+  // 起動時: セッションを用意し、流れてきたボトルを1件取得。以後セッションを定期更新。
+  useEffect(() => {
+    let keepAlive;
+    (async () => {
+      try {
+        const sessionId = await ensureSession();
+        const data = await fetchStream(sessionId);
+        setLetterBody(data.message ? data.message.body : null);
+        // オンライン維持（30秒ごとに last_seen_at を更新）
+        keepAlive = setInterval(() => {
+          pingSession(sessionId).catch(() => {});
+        }, 30000);
+      } catch (e) {
+        console.error("ボトルの取得に失敗しました", e);
+      }
+    })();
+
+    return () => clearInterval(keepAlive);
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setLayers(prev =>
