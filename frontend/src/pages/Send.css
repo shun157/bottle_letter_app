@@ -62,6 +62,9 @@
 
     background:transparent;
 
+    color:#333;
+    caret-color:#333;
+
     font-size:24px;
 
     padding:5px 0;
@@ -99,6 +102,9 @@
     background-color:transparent;
     box-shadow:none;
     border-radius:0;
+
+    color:#333;
+    caret-color:#333;
 
     font-size:20px;
     line-height:40px;

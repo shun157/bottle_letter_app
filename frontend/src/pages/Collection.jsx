@@ -1,21 +1,34 @@
 import "./Collection.css";
 import bottleImg from "../assets/bottle.png";
 import LetterScene from "../components/LetterScene";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ensureSession, fetchCollection } from "../api/client";
 
 export default function Collection() {
   const navigate = useNavigate();
 
   const [showLetter, setShowLetter] = useState(false);
-  const [selectedBottle, setSelectedBottle] = useState(null);
+  const [selectedBody, setSelectedBody] = useState(null);
+  // 拾った手紙の一覧（もちもの）
+  const [bottles, setBottles] = useState([]);
 
-  // 仮データ
-  const bottles = [1, 2, 3, 4, 5, 6, 7];
+  // 開いたときに拾った手紙を取得
+  useEffect(() => {
+    (async () => {
+      try {
+        const sessionId = await ensureSession();
+        const data = await fetchCollection(sessionId);
+        setBottles(data.picked_messages ?? []);
+      } catch (e) {
+        console.error("コレクションの取得に失敗しました", e);
+      }
+    })();
+  }, []);
 
   // 5個ずつ棚に分ける
   const shelves = Array.from(
-    { length: Math.ceil(bottles.length / 5) },
+    { length: Math.max(1, Math.ceil(bottles.length / 5)) },
     (_, i) => bottles.slice(i * 5, i * 5 + 5)
   );
 
@@ -28,14 +41,14 @@ export default function Collection() {
       {shelves.map((shelf, index) => (
         <div className="shelf-wrapper" key={index}>
           <div className="bottles">
-            {shelf.map((id) => (
+            {shelf.map((item) => (
               <img
-                key={id}
+                key={item.pickup_id}
                 src={bottleImg}
                 alt="ボトル"
                 className="collection-bottle"
                 onClick={() => {
-                  setSelectedBottle(id);
+                  setSelectedBody(item.body);
                   setShowLetter(true);
                 }}
               />
@@ -48,6 +61,7 @@ export default function Collection() {
       <LetterScene
         showLetter={showLetter}
         setShowLetter={setShowLetter}
+        body={selectedBody}
         buttonText="もどる"
       />
     </div>
