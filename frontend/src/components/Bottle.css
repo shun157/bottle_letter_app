@@ -1,0 +1,128 @@
+/* ===== 外側：左右移動＋上下ぷかぷか ===== */
+
+.bottle-float {
+  position: absolute;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.bottle-float.bottle-right {
+  animation-name: driftRight;
+}
+
+.bottle-float.bottle-left {
+  animation-name: driftLeft;
+}
+
+/* ===== 瓶 ===== */
+
+.bottle {
+  display: block;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+
+  animation: rock 4s ease-in-out infinite;
+}
+
+/* 右へ流れる瓶：ゆらゆら */
+
+/* .bottle-right .bottle {
+  animation: rockRight 6s ease-in-out infinite;
+} */
+
+/* 左へ流れる瓶：ゆらゆら */
+
+/* .bottle-left .bottle {
+  animation: rockLeft 6s ease-in-out infinite;
+} */
+
+/* ホバー */
+
+.bottle:hover {
+  filter: drop-shadow(0 0 15px gold);
+}
+
+.bottle-float:hover {
+  animation-play-state: paused;
+}
+
+.bottle-float:hover .bottle {
+  animation-play-state: paused;
+}
+
+/* ===== 左→右 ===== */
+
+@keyframes driftRight {
+  0% {
+    left: -15%;
+    transform: translateY(0px);
+  }
+
+  20% {
+    transform: translateY(-6px);
+  }
+
+  40% {
+    transform: translateY(5px);
+  }
+
+  60% {
+    transform: translateY(-8px);
+  }
+
+  80% {
+    transform: translateY(4px);
+  }
+
+  100% {
+    left: 110%;
+    transform: translateY(0px);
+  }
+}
+
+/* ===== 右→左 ===== */
+
+@keyframes driftLeft {
+  0% {
+    right: -15%;
+    transform: translateY(0px);
+  }
+
+  20% {
+    transform: translateY(-6px);
+  }
+
+  40% {
+    transform: translateY(5px);
+  }
+
+  60% {
+    transform: translateY(-8px);
+  }
+
+  80% {
+    transform: translateY(4px);
+  }
+
+  100% {
+    right: 110%;
+    transform: translateY(0px);
+  }
+}
+
+/* ===== 傾き ===== */
+
+@keyframes rock {
+  0% {
+    transform: rotate(calc(var(--angle) + 5deg));
+  }
+
+  50% {
+    transform: rotate(calc(var(--angle) - 5deg));
+  }
+
+  100% {
+    transform: rotate(calc(var(--angle) + 5deg));
+  }
+}

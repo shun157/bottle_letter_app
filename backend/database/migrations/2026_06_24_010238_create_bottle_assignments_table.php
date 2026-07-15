@@ -26,24 +26,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('USER_SESSION_LINK', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-
-            $table->uuid('user_id')->index();
-            $table->uuid('client_session_id')->index();
-
-            $table->datetime('linked_at');
-        });
-
-        Schema::create('CLIENT_SESSION', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-
-            $table->string('session_id')->default('active')->index();
-            $table->boolean('notification_enable')->default(false);
-            $table->datetime('created_at');
-            $table->datetime('last_seen_at');
-        });
-    }
 
     /**
      * Reverse the migrations.
