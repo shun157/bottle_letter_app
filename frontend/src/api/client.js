@@ -29,3 +29,24 @@ export async function ensureSession() {
 export async function fetchStream(sessionId) {
   return request(`/stream?session_id=${encodeURIComponent(sessionId)}`);
 }
+
+// 手紙を海に流す（放流）
+export async function createMessage(sessionId, body) {
+  return request("/messages", {
+    method: "POST",
+    body: JSON.stringify({ body, sender_session_id: sessionId }),
+  });
+}
+
+// コレクション（拾った手紙・流した手紙の履歴）を取得
+export async function fetchCollection(sessionId) {
+  return request(`/collection?session_id=${encodeURIComponent(sessionId)}`);
+}
+
+// セッションのオンライン状態を維持（last_seen_at 更新）
+export async function pingSession(sessionId) {
+  return request("/session/active", {
+    method: "PUT",
+    body: JSON.stringify({ session_id: sessionId }),
+  });
+}

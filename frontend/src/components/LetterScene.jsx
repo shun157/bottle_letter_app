@@ -3,6 +3,7 @@ import "./Letter.css";
 export default function LetterScene({
   showLetter,
   setShowLetter,
+  body,
   buttonText = "うみにもどる",
 }) {
   if (!showLetter) return null;

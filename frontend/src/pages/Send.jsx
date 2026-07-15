@@ -2,33 +2,41 @@ import "./Send.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bottleImg from "../assets/bottle.png";
+import { ensureSession, createMessage } from "../api/client";
 
 export default function Send() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
   const today = new Date();
   const date =
     `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日`;
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (title.trim() === "" || message.trim() === "") {
       alert("件名と本文を入力してください。");
       return;
     }
+    if (sending) return;
 
-    // 今は確認だけ
-    console.log({
-      title,
-      message,
-      date,
-    });
+    // バックエンドの本文は1フィールドのため、件名と本文をまとめて送る
+    const body = `${title.trim()}\n\n${message.trim()}`;
 
-    alert("メッセージを海へ流しました！");
-
-    navigate("/");
+    setSending(true);
+    try {
+      const sessionId = await ensureSession();
+      await createMessage(sessionId, body);
+      alert("メッセージを海へ流しました！");
+      navigate("/");
+    } catch (e) {
+      console.error("放流に失敗しました", e);
+      alert("流すのに失敗しました。もう一度お試しください。");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -64,9 +72,10 @@ export default function Send() {
         <button
           className="send-button"
           onClick={handleSend}
+          disabled={sending}
         >
           <img src={bottleImg} alt="瓶" className="button-bottle"/>
-          <span>うみにながす</span>
+          <span>{sending ? "ながしています…" : "うみにながす"}</span>
         </button>
 
       </div>
