@@ -1,0 +1,89 @@
+.collection{
+    width:100vw;
+    height:100vh;
+
+    padding-top:60px;
+
+    background:linear-gradient(
+        to bottom,
+        #b88755 0%,
+        #9b6d42 100%
+    );
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    overflow-y:auto;
+}
+
+/* 戻る */
+
+.back-btn{
+    position:fixed;
+
+    top:25px;
+    left:25px;
+
+    padding:10px 20px;
+
+    border:none;
+    border-radius:999px;
+
+    background:#4aa7d8;
+    color:white;
+
+    cursor:pointer;
+}
+
+/* 棚全体 */
+
+.shelf-wrapper{
+    width:80%;
+    margin-top:30px;
+}
+
+/* ボトルを並べる */
+
+.bottles{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    justify-items:center;
+
+    margin-bottom:-50px;   /* 棚に少しめり込ませる */
+
+    position:relative;
+    z-index:2;
+}
+
+/* 棚 */
+
+.shelf{
+    width:100%;
+    height:100px;
+
+    background:#6f4728;
+
+    border-radius:12px;
+
+    box-shadow:0 8px 15px rgba(0,0,0,.25);
+}
+
+/* ボトル */
+
+.collection-bottle{
+    width:65px;
+
+    transition:.2s;
+}
+
+.collection-bottle:hover{
+    transform:translateY(-8px) rotate(-5deg);
+}
+
+/* 鍵 */
+
+.lock{
+    font-size:48px;
+    opacity:.5;
+}
