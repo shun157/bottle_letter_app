@@ -11,7 +11,6 @@ export default function Collection() {
   const [showLetter, setShowLetter] = useState(false);
   const [selectedBody, setSelectedBody] = useState(null);
   // 拾った手紙の一覧（もちもの）
-  const [bottles, setBottles] = useState([]);
 
   // 仮データ
   const bottles = [
