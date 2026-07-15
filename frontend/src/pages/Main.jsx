@@ -68,7 +68,10 @@ export default function Main() {
 
       {/* 左メニュー */}
       <div className="menu">
-        <div className="menu-item">
+        <div 
+          className="menu-item"
+          onClick={() => navigate("/send")}  
+        >
           <img src={nagasuIcon} className="menu-icon" />
           <span>ながす</span>
         </div>
