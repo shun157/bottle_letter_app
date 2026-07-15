@@ -13,7 +13,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/sessions', [SessionController::class, 'store']);
+Route::put('/session/active', [SessionController::class, 'active']);
 Route::get('/stream', [StreamController::class, 'show']);
+Route::post('/messages', [MessageController::class, 'store']);
 Route::patch('/assignments/{assignment}/expire', [AssignmentController::class, 'expire']);
 Route::post('/messages/{message}/pickup', [MessageController::class, 'pickup']);
 Route::get('/collection', [CollectionController::class, 'index']);

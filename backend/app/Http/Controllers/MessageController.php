@@ -13,6 +13,33 @@ use Illuminate\Validation\ValidationException;
 class MessageController extends Controller
 {
     /**
+     * ボトル放流
+     *
+     * ユーザーが手紙を書いて「ながす」を押した際に呼ばれる。
+     * BottleMessage を waiting 状態で新規作成する。
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+            'sender_session_id' => ['required', 'uuid', 'exists:client_sessions,id'],
+        ]);
+
+        $message = BottleMessage::create([
+            'sender_session_id' => $validated['sender_session_id'],
+            'body' => $validated['body'],
+            'status' => BottleMessage::STATUS_WAITING,
+        ]);
+
+        return response()->json([
+            'id' => $message->id,
+            'body' => $message->body,
+            'status' => $message->status,
+            'created_at' => optional($message->created_at)->toJSON(),
+        ], 201);
+    }
+
+    /**
      * ボトル回収
      *
      * ユーザーがボトルをクリックして「ひろう」を押した際に呼ばれる。
