@@ -72,6 +72,8 @@
   flex-direction: column;
   gap: 35px;
 
+  margin-top:60px;
+
   z-index: 1000;
 }
 
