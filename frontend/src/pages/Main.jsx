@@ -82,21 +82,15 @@ export default function Main() {
               {...layer.bottle}
               onClick={() => {
 
+                console.log("瓶クリック");
+                
                 setLetterData({
                   title: layer.letter?.title ?? "海からの手紙",
                   date: getTodayDate(),
                   message: layer.letter?.message ?? "こんにちは。"
                 });
 
-                setShowLetter(true);
-
-                setLayers(prev =>
-                  prev.map(l =>
-                    l.id === layer.id
-                      ? { ...l, visible: false }
-                      : l
-                  )
-                );
+                console.log("表示設定完了");
               }}
             />
           )}
