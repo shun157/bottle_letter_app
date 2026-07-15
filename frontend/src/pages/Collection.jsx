@@ -3,16 +3,14 @@ import bottleImg from "../assets/bottle.png";
 import Letter from "../components/Letter";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ensureSession, fetchCollection } from "../api/client";
 
 export default function Collection() {
   const navigate = useNavigate();
 
   const [showLetter, setShowLetter] = useState(false);
-  const [selectedBody, setSelectedBody] = useState(null);
-  // 拾った手紙の一覧（もちもの）
+  const [selectedBottle, setSelectedBottle] = useState(null);
 
-  // 仮データ
+  // 拾った手紙の一覧の仮データ
   const bottles = [
     {
       id: 1,

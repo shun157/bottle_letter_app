@@ -108,6 +108,7 @@ export default function Main() {
     <div className="waves-container">
 
     <div className="wave-layer">
+
       {/* 波は背景として常に表示 */}
       {initialLayers.map((layer) => (
         <Wave key={layer.id} {...layer.wave} />
