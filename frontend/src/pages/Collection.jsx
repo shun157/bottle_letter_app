@@ -1,6 +1,6 @@
 import "./Collection.css";
 import bottleImg from "../assets/bottle.png";
-import LetterScene from "../components/LetterScene";
+import Letter from "../components/Letter";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,26 @@ export default function Collection() {
   const [selectedBottle, setSelectedBottle] = useState(null);
 
   // 仮データ
-  const bottles = [1, 2, 3, 4, 5, 6, 7];
+  const bottles = [
+    {
+      id: 1,
+      title: "今日の出来事",
+      date: "2026年7月15日",
+      message: "今日はいいことがありました。",
+    },
+    {
+      id: 2,
+      title: "ありがとう",
+      date: "2026年7月14日",
+      message: "助けてくれてありがとう！",
+    },
+    {
+      id: 3,
+      title: "ひとりごと",
+      date: "2026年7月13日",
+      message: "眠たいです。",
+    },
+  ];
 
   // 5個ずつ棚に分ける
   const shelves = Array.from(
@@ -28,14 +47,14 @@ export default function Collection() {
       {shelves.map((shelf, index) => (
         <div className="shelf-wrapper" key={index}>
           <div className="bottles">
-            {shelf.map((id) => (
+            {shelf.map((bottle) => (
               <img
-                key={id}
+                key={bottle.id}
                 src={bottleImg}
                 alt="ボトル"
                 className="collection-bottle"
                 onClick={() => {
-                  setSelectedBottle(id);
+                  setSelectedBottle(bottle);
                   setShowLetter(true);
                 }}
               />
@@ -45,10 +64,13 @@ export default function Collection() {
           <div className="shelf"></div>
         </div>
       ))}
-      <LetterScene
+      <Letter
         showLetter={showLetter}
         setShowLetter={setShowLetter}
-        buttonText="もどる"
+        title={selectedBottle?.title}
+        date={selectedBottle?.date}
+        message={selectedBottle?.message}
+        buttonText="もちものにもどる"
       />
     </div>
   );
