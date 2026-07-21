@@ -3,14 +3,12 @@ import bottleImg from "../assets/bottle.png";
 import Letter from "../components/Letter";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ensureSession, fetchCollection } from "../api/client";
 
 export default function Collection() {
   const navigate = useNavigate();
 
   const [showLetter, setShowLetter] = useState(false);
-  const [selectedBody, setSelectedBody] = useState(null);
-  // 拾った手紙の一覧（もちもの）
+  const [selectedBottle, setSelectedBottle] = useState(null);
 
   // 仮データ
   const bottles = [
@@ -42,7 +40,10 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <button className="back-btn" onClick={() => navigate("/")}>
+      <button
+        className="back-btn"
+        onClick={() => navigate("/")}
+      >
         ← うみへ
       </button>
 
@@ -50,22 +51,37 @@ export default function Collection() {
         <div className="shelf-wrapper" key={index}>
           <div className="bottles">
             {shelf.map((bottle) => (
-              <img
+              <div
                 key={bottle.id}
-                src={bottleImg}
-                alt="ボトル"
-                className="collection-bottle"
+                className="bottle-item"
                 onClick={() => {
                   setSelectedBottle(bottle);
                   setShowLetter(true);
                 }}
-              />
+              >
+                <div className="bottle-tooltip">
+                  <div className="tooltip-title">
+                    {bottle.title}
+                  </div>
+
+                  <div className="tooltip-date">
+                    {bottle.date}
+                  </div>
+                </div>
+
+                <img
+                  src={bottleImg}
+                  alt="ボトル"
+                  className="collection-bottle"
+                />
+              </div>
             ))}
           </div>
 
           <div className="shelf"></div>
         </div>
       ))}
+
       <Letter
         showLetter={showLetter}
         setShowLetter={setShowLetter}

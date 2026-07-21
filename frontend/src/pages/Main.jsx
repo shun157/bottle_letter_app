@@ -153,9 +153,7 @@ export default function Main() {
         showLetter={showLetter}
         setShowLetter={setShowLetter}
 
-        title={letterData?.title}
-        date={letterData?.date}
-        message={letterData?.message}
+        buttonText="うみにもどる"
       />
 
     </div>
