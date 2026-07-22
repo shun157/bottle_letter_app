@@ -13,7 +13,7 @@ import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
 import tukaikataIcon from "../assets/tukaikata.png";
 import Wave from "../components/Wave";
-import LetterScene from "../components/LetterScene";
+import Letter from "../components/Letter";
 import Bottle from "../components/Bottle";
 
 // 流れてくるボトルの見た目（レイヤーの1つを流用）
@@ -155,10 +155,13 @@ export default function Main() {
 
       </div>
 
-      <LetterScene
+      <Letter
         showLetter={showLetter}
         setShowLetter={setShowLetter}
-        body={letterBody}
+
+        title={letterData?.title}
+        date={letterData?.date}
+        message={letterData?.message}
       />
 
     </div>
