@@ -1,7 +1,7 @@
 import "./Main.css";
 import nagasuIcon from "../assets/nagasu.png";
 import motimonoIcon from "../assets/motimono.png";
-import tukaikataIcon from "../assets/tukaikata.png";
+// import tukaikataIcon from "../assets/tukaikata.png";
 
 
 export default function Main() {
@@ -79,10 +79,10 @@ export default function Main() {
           <span>もちもの</span>
         </div>
 
-        <div className="menu-item">
+        {/* <div className="menu-item">
           <img src={tukaikataIcon} className="menu-icon" />
           <span>つかいかた</span>
-        </div>
+        </div> */}
 
       </div>
     </div>
