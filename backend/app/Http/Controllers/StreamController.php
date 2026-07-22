@@ -17,6 +17,9 @@ class StreamController extends Controller
             'session_id' => ['required', 'uuid', 'exists:client_sessions,id'],
         ]);
 
+        // 期限切れの割り当てを海へ戻してから配布する（拾われず放置されたボトルの回収）
+        $this->reclaimExpiredAssignments();
+
         $assignment = DB::transaction(function () use ($validated) {
             $message = BottleMessage::query()
                 ->where('status', BottleMessage::STATUS_WAITING)
@@ -36,7 +39,7 @@ class StreamController extends Controller
                 'assigned_session_id' => $validated['session_id'],
                 'status' => BottleAssignment::STATUS_ACTIVE,
                 'assigned_at' => $now,
-                'assigned_until' => $now->copy()->addSeconds(30),
+                'assigned_until' => $now->copy()->addSeconds(BottleAssignment::ACTIVE_SECONDS),
             ]);
 
             $message->update([
@@ -60,5 +63,29 @@ class StreamController extends Controller
             ],
             'assigned_until' => $assignment->assigned_until->toJSON(),
         ]);
+    }
+
+    /**
+     * assigned_until を過ぎても active のままの割り当てを expired にし、
+     * 対応するメッセージを waiting に戻す（サーバ側の再放流）。
+     */
+    private function reclaimExpiredAssignments(): void
+    {
+        DB::transaction(function () {
+            $expired = BottleAssignment::query()
+                ->where('status', BottleAssignment::STATUS_ACTIVE)
+                ->where('assigned_until', '<', now())
+                ->lockForUpdate()
+                ->get();
+
+            foreach ($expired as $assignment) {
+                $assignment->update(['status' => BottleAssignment::STATUS_EXPIRED]);
+
+                BottleMessage::query()
+                    ->whereKey($assignment->bottle_message_id)
+                    ->where('status', BottleMessage::STATUS_ASSIGNED)
+                    ->update(['status' => BottleMessage::STATUS_WAITING]);
+            }
+        });
     }
 }

@@ -15,6 +15,10 @@ class BottleAssignment extends Model
     public const STATUS_EXPIRED = 'expired';
     public const STATUS_PICKED = 'picked';
 
+    // 1件のボトルが1人の画面に流れている（拾える）秒数。
+    // フロントのボトルが流れきる時間もこの値に同期させる。
+    public const ACTIVE_SECONDS = 30;
+
     protected $fillable = [
         'bottle_message_id',
         'assigned_session_id',

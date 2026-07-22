@@ -42,10 +42,15 @@ export default function Main() {
           sessionIdRef.current = sessionId;
           const data = await fetchStream(sessionId);
           if (data.message) {
+            // 割り当て期限に合わせてボトルが流れきる時間を同期させる
+            const remainingMs =
+              new Date(data.assigned_until).getTime() - Date.now();
+            const durationSec = Math.max(1, Math.round(remainingMs / 1000));
             setBottle({
               assignmentId: data.assignment_id,
               messageId: data.message.id,
               body: data.message.body,
+              durationSec,
             });
           }
           // オンライン維持（30秒ごとに last_seen_at を更新）
@@ -117,6 +122,7 @@ export default function Main() {
       {bottle && (
         <Bottle
           {...bottleStyle}
+          duration={`${bottle.durationSec}s`}
           onClick={handlePickup}
           onDriftOff={handleDriftOff}
         />

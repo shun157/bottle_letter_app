@@ -9,7 +9,9 @@ async function request(path, options = {}) {
     ...options,
   });
   if (!res.ok) {
-    throw new Error(`API ${path} failed: ${res.status}`);
+    const err = new Error(`API ${path} failed: ${res.status}`);
+    err.status = res.status;
+    throw err;
   }
   return res.json();
 }
@@ -17,12 +19,8 @@ async function request(path, options = {}) {
 // セッション発行の多重実行を防ぐための in-flight プロミス
 let sessionPromise = null;
 
-// セッションを取得（無ければ発行して localStorage に保存）
-// 同時に複数回呼ばれても、発行リクエストは1回だけにまとめる（StrictModeの二重実行対策）。
-export async function ensureSession() {
-  const stored = localStorage.getItem(SESSION_KEY);
-  if (stored) return stored;
-
+// 新しいセッションを発行して localStorage に保存（発行リクエストは1回にまとめる）
+function createSession() {
   if (!sessionPromise) {
     sessionPromise = request("/sessions", { method: "POST" })
       .then((data) => {
@@ -34,6 +32,26 @@ export async function ensureSession() {
       });
   }
   return sessionPromise;
+}
+
+// セッションを取得する。
+// 保存済みのセッションが（DBリセット等で）無効になっていたら破棄して作り直す。
+export async function ensureSession() {
+  const stored = localStorage.getItem(SESSION_KEY);
+  if (stored) {
+    try {
+      // last_seen_at 更新を兼ねて有効性を確認（無効なら422）
+      await pingSession(stored);
+      return stored;
+    } catch (e) {
+      if (e.status === 422) {
+        localStorage.removeItem(SESSION_KEY); // 無効なので破棄 → 新規発行へ
+      } else {
+        return stored; // 一時的な通信エラー等では保存済みIDを維持
+      }
+    }
+  }
+  return createSession();
 }
 
 // 自分の画面に流すべきボトルを1件取得（無ければ message:null）
